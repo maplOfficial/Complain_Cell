@@ -1,0 +1,651 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Complaints | Modina Complaint Cell</title>
+
+  <style>
+    :root {
+      --primary: #123b66;
+      --secondary: #087b55;
+      --bg: #f4f7fb;
+      --text: #243247;
+      --muted: #718096;
+      --border: #e2e8f0;
+      --white: #fff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 175px;
+      max-height: 55px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      border-left: 1px solid var(--border);
+      padding-left: 12px;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--primary);
+      font-size: 17px;
+    }
+
+    .brand-text small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 13px;
+      border-radius: 7px;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    main {
+      width: 92%;
+      max-width: 1500px;
+      margin: 28px auto;
+    }
+
+    .page-heading {
+      margin-bottom: 22px;
+    }
+
+    .page-heading h1 {
+      color: var(--primary);
+      font-size: 27px;
+      margin: 0 0 7px;
+    }
+
+    .page-heading p {
+      color: var(--muted);
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 19px;
+      box-shadow: 0 3px 12px rgba(15, 40, 70, .04);
+    }
+
+    .stat-card span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 9px;
+    }
+
+    .stat-card strong {
+      color: var(--primary);
+      font-size: 27px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(15, 40, 70, .04);
+      overflow: hidden;
+    }
+
+    .panel-heading {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      padding: 16px 20px;
+      flex-wrap: wrap;
+    }
+
+    .toolbar input {
+      flex: 1;
+      min-width: 200px;
+      padding: 11px 13px;
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .toolbar input:focus {
+      border-color: var(--primary);
+    }
+
+    .refresh-btn {
+      border: none;
+      border-radius: 7px;
+      background: var(--primary);
+      color: white;
+      padding: 11px 17px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .refresh-btn:hover { background: #0b2d50; }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1150px;
+    }
+
+    th, td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 13px;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f5f8fc;
+      color: var(--primary);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    td { line-height: 1.5; }
+
+    tbody tr:hover { background: #f8fbff; }
+
+    .id {
+      color: var(--secondary);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .photo-link {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .photo-link:hover { text-decoration: underline; }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 35px 15px;
+    }
+
+    .status {
+      padding: 14px 20px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .error { color: #c0392b; }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 25px 10px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      header {
+        padding: 13px 4%;
+        align-items: flex-start;
+      }
+
+      .brand img { width: 135px; }
+
+      .brand-text strong { font-size: 14px; }
+
+      nav { width: 100%; }
+
+      nav a {
+        font-size: 12px;
+        padding: 9px 10px;
+      }
+
+      main {
+        width: 94%;
+        margin: 20px auto;
+      }
+
+      .page-heading h1 { font-size: 22px; }
+
+      .stats { gap: 9px; }
+
+      .stat-card { padding: 13px 10px; }
+
+      .stat-card span { font-size: 11px; }
+
+      .stat-card strong { font-size: 22px; }
+
+      .panel-heading { padding: 15px; }
+
+      .toolbar { padding: 13px; }
+
+      .toolbar input { min-width: 100%; }
+
+      .refresh-btn { width: 100%; }
+    }
+
+    @media (max-width: 380px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <img
+      src="https://modinaautopartsltd.com/_next/static/media/logo.40df2f61.svg"
+      alt="Modina Auto Parts Logo"
+    >
+    <div class="brand-text">
+      <strong>Complaint Cell</strong>
+      <small>Product Complaint Management</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="products.html" class="active">Product Complaints</a>
+    <a href="exporters.html">Exporter Claims</a>
+    <a href="login.html">Admin Login</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="page-heading">
+    <h1>Product Complaints</h1>
+    <p>All submitted product complaints in one place.</p>
+  </section>
+
+  <section class="stats">
+    <div class="stat-card">
+      <span>Total Complaints</span>
+      <strong id="totalCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Today's Complaints</span>
+      <strong id="todayCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Brands</span>
+      <strong id="brandCount">0</strong>
+    </div>
+  </section>
+
+  <section class="panel">
+
+    <div class="panel-heading">
+      <h2>Product Complaint Records</h2>
+      <span id="recordCount">0 Records</span>
+    </div>
+
+    <div class="toolbar">
+      <input
+        type="search"
+        id="searchInput"
+        placeholder="Search ID, LC No, Brand, Part Number, Item..."
+        autocomplete="off"
+      >
+
+      <button class="refresh-btn" onclick="loadProducts()">
+        ↻ Refresh Data
+      </button>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Auto ID</th>
+            <th>Date</th>
+            <th>LC No</th>
+            <th>Brand</th>
+            <th>Part Number</th>
+            <th>Item Name</th>
+            <th>Model</th>
+            <th>Quantity</th>
+            <th>Unit</th>
+            <th>Complaint Reason</th>
+            <th>Photo</th>
+          </tr>
+        </thead>
+
+        <tbody id="productTable">
+          <tr>
+            <td colspan="11" class="empty">Loading complaints...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="status" id="statusMessage">
+      Connecting to server...
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  © <span id="year"></span> Modina Auto Parts Ltd. All Rights Reserved.
+  <br>
+  Complaint Cell Management System
+</footer>
+
+<script>
+  // Google Apps Script Web App URL
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbz12ODreGg5NHskvG9Rm9rzDGn1dIhUHQSoYR8xN5f4SZG0GLkUS4Gxrlzz0InXvoGu/exec";
+
+  let allProducts = [];
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function(char) {
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char];
+    });
+  }
+
+  function normalize(value) {
+    return String(value ?? "").trim().toLowerCase();
+  }
+
+  function getField(record, field) {
+    return record[field] ?? record[field.toLowerCase()] ?? "";
+  }
+
+  function formatDate(value) {
+    if (!value) return "";
+
+    const date = new Date(value);
+
+    if (isNaN(date.getTime())) {
+      return String(value);
+    }
+
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric"
+    });
+  }
+
+  function loadProducts() {
+    const status = document.getElementById("statusMessage");
+    const table = document.getElementById("productTable");
+
+    status.className = "status";
+    status.textContent = "Loading product complaints...";
+
+    table.innerHTML =
+      '<tr><td colspan="11" class="empty">Loading...</td></tr>';
+
+    const callbackName =
+      "productCallback_" + Date.now();
+
+    const script = document.createElement("script");
+
+    let finished = false;
+
+    const timeout = setTimeout(function() {
+      if (finished) return;
+
+      finished = true;
+      delete window[callbackName];
+      script.remove();
+
+      status.className = "status error";
+      status.textContent =
+        "Server response timed out. Please refresh and try again.";
+
+      table.innerHTML =
+        '<tr><td colspan="11" class="empty">Unable to load data.</td></tr>';
+    }, 20000);
+
+    window[callbackName] = function(response) {
+      if (finished) return;
+
+      finished = true;
+      clearTimeout(timeout);
+      delete window[callbackName];
+      script.remove();
+
+      if (!response || response.success !== true) {
+        status.className = "status error";
+        status.textContent =
+          response?.message || "Unable to load product complaints.";
+
+        table.innerHTML =
+          '<tr><td colspan="11" class="empty">No data available.</td></tr>';
+        return;
+      }
+
+      const products = response.data?.products;
+
+      if (!Array.isArray(products)) {
+        status.className = "status error";
+        status.textContent =
+          "API response format is incorrect. Check Code.gs.";
+
+        table.innerHTML =
+          '<tr><td colspan="11" class="empty">Invalid data format.</td></tr>';
+        return;
+      }
+
+      allProducts = products;
+
+      updateStatistics();
+      renderProducts(allProducts);
+
+      status.textContent =
+        "Data loaded successfully. Last updated: " +
+        new Date().toLocaleTimeString();
+    };
+
+    script.onerror = function() {
+      if (finished) return;
+
+      finished = true;
+      clearTimeout(timeout);
+      delete window[callbackName];
+      script.remove();
+
+      status.className = "status error";
+      status.textContent =
+        "Connection failed. Check your Apps Script deployment.";
+
+      table.innerHTML =
+        '<tr><td colspan="11" class="empty">Connection error.</td></tr>';
+    };
+
+    script.src =
+      API_URL +
+      "?action=getPublicComplaints&callback=" +
+      encodeURIComponent(callbackName);
+
+    document.body.appendChild(script);
+  }
+
+  function updateStatistics() {
+    const today = new Date().toDateString();
+
+    const todayTotal = allProducts.filter(function(item) {
+      const dateValue = getField(item, "Date");
+      return dateValue &&
+        new Date(dateValue).toDateString() === today;
+    }).length;
+
+    const brands = new Set(
+      allProducts
+        .map(item => normalize(getField(item, "Brand_Name")))
+        .filter(Boolean)
+    );
+
+    document.getElementById("totalCount").textContent =
+      allProducts.length;
+
+    document.getElementById("todayCount").textContent =
+      todayTotal;
+
+    document.getElementById("brandCount").textContent =
+      brands.size;
+  }
+
+  function renderProducts(products) {
+    const table = document.getElementById("productTable");
+
+    document.getElementById("recordCount").textContent =
+      products.length + " Records";
+
+    if (!products.length) {
+      table.innerHTML =
+        '<tr><td colspan="11" class="empty">No product complaints found.</td></tr>';
+      return;
+    }
+
+    table.innerHTML = products.map(function(item) {
+      const photo = getField(item, "Photo");
+
+      let photoHTML = "-";
+
+      if (photo) {
+        const safePhoto = escapeHTML(photo);
+
+        photoHTML =
+          '<a class="photo-link" href="' + safePhoto +
+          '" target="_blank" rel="noopener noreferrer">View Photo ↗</a>';
+      }
+
+      return `
+        <tr>
+          <td class="id">${escapeHTML(getField(item, "Auto_ID"))}</td>
+          <td>${escapeHTML(formatDate(getField(item, "Date")))}</td>
+          <td>${escapeHTML(getField(item, "Lc_No"))}</td>
+          <td><strong>${escapeHTML(getField(item, "Brand_Name"))}</strong></td>
+          <td>${escapeHTML(getField(item, "Part_Number"))}</td>
+          <td>${escapeHTML(getField(item, "Item_Name"))}</td>
+          <td>${escapeHTML(getField(item, "Model_Name"))}</td>
+          <td>${escapeHTML(getField(item, "Qty"))}</td>
+          <td>${escapeHTML(getField(item, "Unit"))}</td>
+          <td>${escapeHTML(getField(item, "Complain_Reason"))}</td>
+          <td>${photoHTML}</td>
+        </tr>
+      `;
+    }).join("");
+  }
+
+  document.getElementById("searchInput").addEventListener(
+    "input",
+    function(event) {
+      const query = normalize(event.target.value);
+
+      const filtered = allProducts.filter(function(item) {
+        return [
+          getField(item, "Auto_ID"),
+          getField(item, "Date"),
+          getField(item, "Lc_No"),
+          getField(item, "Brand_Name"),
+          getField(item, "Part_Number"),
+          getField(item, "Item_Name"),
+          getField(item, "Model_Name"),
+          getField(item, "Qty"),
+          getField(item, "Unit"),
+          getField(item, "Complain_Reason")
+        ].some(value => normalize(value).includes(query));
+      });
+
+      renderProducts(filtered);
+    }
+  );
+
+  loadProducts();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,520 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Modina Complaint Cell</title>
+
+  <style>
+    :root {
+      --primary: #123b66;
+      --secondary: #087b55;
+      --bg: #f4f7fb;
+      --text: #243247;
+      --muted: #718096;
+      --border: #dfe6ef;
+      --white: #ffffff;
+      --danger: #c0392b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, #e2edf8, transparent 40%),
+        var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand img {
+      width: 175px;
+      max-height: 55px;
+      object-fit: contain;
+    }
+
+    .brand-text {
+      border-left: 1px solid var(--border);
+      padding-left: 12px;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--primary);
+      font-size: 17px;
+    }
+
+    .brand-text small {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 13px;
+      border-radius: 7px;
+    }
+
+    nav a:hover,
+    nav a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 45px 16px;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 35px;
+      box-shadow: 0 12px 35px rgba(15, 40, 70, .09);
+    }
+
+    .login-icon {
+      width: 62px;
+      height: 62px;
+      margin: 0 auto 18px;
+      border-radius: 16px;
+      background: #eaf1f8;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 29px;
+    }
+
+    .login-card h1 {
+      color: var(--primary);
+      text-align: center;
+      margin: 0 0 8px;
+      font-size: 25px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0 0 27px;
+    }
+
+    .form-group {
+      margin-bottom: 19px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+      background: white;
+      color: var(--text);
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(18, 59, 102, .08);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 65px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: none;
+      background: transparent;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      width: 100%;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: white;
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 5px;
+      transition: .2s;
+    }
+
+    .login-btn:hover {
+      background: #0b2d50;
+    }
+
+    .login-btn:disabled {
+      opacity: .65;
+      cursor: not-allowed;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      margin-top: 17px;
+      border-radius: 7px;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .message.error {
+      display: block;
+      color: var(--danger);
+      background: #fff0ef;
+      border: 1px solid #ffd5d1;
+    }
+
+    .message.success {
+      display: block;
+      color: var(--secondary);
+      background: #eaf8f1;
+      border: 1px solid #c7ead8;
+    }
+
+    .back-link {
+      display: block;
+      margin-top: 23px;
+      text-align: center;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .back-link:hover {
+      color: var(--primary);
+    }
+
+    .security-note {
+      margin-top: 23px;
+      padding: 12px;
+      background: #f5f8fc;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      color: var(--muted);
+      padding: 20px 10px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 13px 4%;
+      }
+
+      .brand img {
+        width: 135px;
+      }
+
+      .brand-text strong {
+        font-size: 14px;
+      }
+
+      nav {
+        width: 100%;
+      }
+
+      nav a {
+        font-size: 12px;
+        padding: 9px 10px;
+      }
+
+      main {
+        padding: 30px 15px;
+      }
+
+      .login-card {
+        padding: 27px 21px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <img
+      src="https://modinaautopartsltd.com/_next/static/media/logo.40df2f61.svg"
+      alt="Modina Auto Parts Logo"
+    >
+
+    <div class="brand-text">
+      <strong>Complaint Cell</strong>
+      <small>Administration Portal</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="index.html">Dashboard</a>
+    <a href="products.html">Product Complaints</a>
+    <a href="exporters.html">Exporter Claims</a>
+    <a href="login.html" class="active">Admin Login</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="login-card">
+
+    <div class="login-icon">🔐</div>
+
+    <h1>Admin Login</h1>
+
+    <p class="subtitle">
+      Sign in to access the Modina Complaint Cell
+      Administration Panel.
+    </p>
+
+    <form id="loginForm">
+
+      <div class="form-group">
+        <label for="username">Username</label>
+
+        <input
+          type="text"
+          id="username"
+          name="username"
+          placeholder="Enter admin username"
+          autocomplete="username"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+
+        <div class="password-wrap">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter admin password"
+            autocomplete="current-password"
+            required
+          >
+
+          <button
+            type="button"
+            class="toggle-password"
+            id="togglePassword"
+          >
+            SHOW
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" class="login-btn" id="loginButton">
+        Sign In
+      </button>
+
+      <div id="message" class="message" role="status"></div>
+
+    </form>
+
+    <div class="security-note">
+      <strong>SECURE ADMIN ACCESS</strong><br>
+      Only authorized administrators can access
+      the management panel.
+    </div>
+
+    <a href="index.html" class="back-link">
+      ← Back to Dashboard
+    </a>
+
+  </section>
+
+</main>
+
+<footer>
+  © <span id="year"></span> Modina Auto Parts Ltd. All Rights Reserved.
+  <br>
+  Complaint Cell Management System
+</footer>
+
+<script>
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbz12ODreGg5NHskvG9Rm9rzDGn1dIhUHQSoYR8xN5f4SZG0GLkUS4Gxrlzz0InXvoGu/exec";
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
+
+  const form = document.getElementById("loginForm");
+  const usernameInput = document.getElementById("username");
+  const passwordInput = document.getElementById("password");
+  const loginButton = document.getElementById("loginButton");
+  const messageBox = document.getElementById("message");
+
+  // Show / Hide Password
+  document.getElementById("togglePassword").addEventListener(
+    "click",
+    function() {
+      const isPassword =
+        passwordInput.type === "password";
+
+      passwordInput.type = isPassword ? "text" : "password";
+      this.textContent = isPassword ? "HIDE" : "SHOW";
+    }
+  );
+
+  function showMessage(message, type) {
+    messageBox.textContent = message;
+    messageBox.className = "message " + type;
+  }
+
+  function setLoading(loading) {
+    loginButton.disabled = loading;
+    loginButton.textContent =
+      loading ? "Signing In..." : "Sign In";
+  }
+
+  form.addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    if (!username || !password) {
+      showMessage("Please enter username and password.", "error");
+      return;
+    }
+
+    setLoading(true);
+    messageBox.className = "message";
+    messageBox.textContent = "";
+
+    try {
+      const formData = new URLSearchParams();
+
+      formData.append("action", "adminLogin");
+      formData.append("username", username);
+      formData.append("password", password);
+
+      const response = await fetch(API_URL, {
+        method: "POST",
+        body: formData,
+        redirect: "follow"
+      });
+
+      if (!response.ok) {
+        throw new Error("Server returned HTTP " + response.status);
+      }
+
+      const result = await response.json();
+
+      if (!result || result.success !== true) {
+        showMessage(
+          result?.message || "Invalid username or password.",
+          "error"
+        );
+        return;
+      }
+
+      const token =
+        result.token ||
+        result.data?.token ||
+        result.data?.sessionToken;
+
+      if (!token) {
+        throw new Error(
+          "Login response did not contain a session token. Check Code.gs."
+        );
+      }
+
+      // Keep the session only for this browser tab/session.
+      sessionStorage.setItem("modinaAdminToken", token);
+      sessionStorage.setItem("modinaAdminUsername", username);
+
+      showMessage("Login successful. Opening Admin Panel...", "success");
+
+      setTimeout(function() {
+        window.location.href = "admin.html";
+      }, 700);
+
+    } catch (error) {
+      console.error("Login error:", error);
+
+      showMessage(
+        "Could not connect to the server. Check your Apps Script API and browser console. " +
+        "If this is a CORS error, the frontend needs a compatible backend connection.",
+        "error"
+      );
+
+    } finally {
+      setLoading(false);
+    }
+  });
+</script>
+
+</body>
+</html>
